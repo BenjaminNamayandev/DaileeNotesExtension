@@ -1,0 +1,11 @@
+{
+    "name": "DaileeNotes",
+    "version": "1.0.0",
+    "description": "Allows user to have an easy-to-access and savable notepad",
+    "manifest_version": 3,
+    "author": "Benjamin N.",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "DaileeNotes"
+    }
+}
