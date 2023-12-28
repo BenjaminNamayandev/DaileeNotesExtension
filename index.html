@@ -4,20 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drawing Website with Eraser</title>
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    canvas {
-      border: 1px solid #000;
-    }
-  </style>
+  <title>Modern Drawing Website</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -27,104 +15,27 @@
 
   <label for="canvasColorPicker">Canvas Color:</label>
   <input type="color" id="canvasColorPicker" value="#ffffff">
+  
+  </nav class='attributes'>
+    <label for="colorPicker">Pen Color:</label>
+    <input type="color" id="colorPicker" value="#000000">
+
+    <label for="penSize">Pen Size:</label>
+    <input type="range" id="penSize" min="1" max="20" value="5">
+
+    <input type="checkbox" id="eraserCheckbox">
+    <label for="eraserCheckbox">Eraser</label>
+
+    <button id="clearButton" onclick="clearCanvas()">Clear Canvas</button>
+    <button id="saveButton" onclick="saveDrawing()">Save Drawing</button>
+  </nav>
 
   <div id="drawingContainer">
     <canvas id="drawingCanvas" width="800" height="600"></canvas>
   </div>
 
-  <label for="colorPicker">Pen Color:</label>
-  <input type="color" id="colorPicker" value="#000000">
 
-  <label for="penSize">Pen Size:</label>
-  <input type="range" id="penSize" min="1" max="20" value="5">
-
-  <input type="checkbox" id="eraserCheckbox">
-  <label for="eraserCheckbox">Eraser</label>
-
-  <button id="clearButton" onclick="clearCanvas()">Clear Canvas</button>
-  <button id="saveButton" onclick="saveDrawing()">Save Drawing</button>
-
-  <script>
-    const mainCanvas = document.getElementById('drawingCanvas');
-    const mainContext = mainCanvas.getContext('2d');
-    const isDrawing = false;
-    const lastX = 0;
-    const lastY = 0;
-    const eraserMode = false;
-
-    const canvasColorPicker = document.getElementById('canvasColorPicker');
-    const colorPicker = document.getElementById('colorPicker');
-    const penSizeInput = document.getElementById('penSize');
-    const eraserCheckbox = document.getElementById('eraserCheckbox');
-
-    const tempCanvas = document.createElement('canvas');
-    tempCanvas.width = mainCanvas.width;
-    tempCanvas.height = mainCanvas.height;
-    const tempContext = tempCanvas.getContext('2d');
-
-    mainCanvas.addEventListener('mousedown', startDrawing);
-    mainCanvas.addEventListener('mousemove', draw);
-    mainCanvas.addEventListener('mouseup', stopDrawing);
-    mainCanvas.addEventListener('mouseout', stopDrawing);
-
-    eraserCheckbox.addEventListener('change', toggleEraser);
-    canvasColorPicker.addEventListener('input', changeCanvasColor);
-
-    function startDrawing(e) {
-      isDrawing = true;
-      [lastX, lastY] = [e.clientX - mainCanvas.offsetLeft, e.clientY - mainCanvas.offsetTop];
-    }
-
-    function draw(e) {
-      if (!isDrawing) return;
-
-      const [x, y] = [e.clientX - mainCanvas.offsetLeft, e.clientY - mainCanvas.offsetTop];
-
-      mainContext.lineWidth = penSizeInput.value;
-
-      if (eraserMode) {
-        mainContext.strokeStyle = canvasColorPicker.value;
-      } else {
-        mainContext.strokeStyle = colorPicker.value;
-      }
-
-      mainContext.beginPath();
-      mainContext.moveTo(lastX, lastY);
-      mainContext.lineTo(x, y);
-      mainContext.stroke();
-
-      tempContext.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-      tempContext.drawImage(mainCanvas, 0, 0);
-
-      [lastX, lastY] = [x, y];
-    }
-
-    function stopDrawing() {
-      isDrawing = false;
-    }
-
-    function clearCanvas() {
-      mainContext.fillStyle = canvasColorPicker.value;
-      mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-    }
-
-    function toggleEraser() {
-      eraserMode = eraserCheckbox.checked;
-    }
-
-    function saveDrawing() {
-      const dataUrl = mainCanvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = 'drawing.png';
-      link.click();
-    }
-
-    function changeCanvasColor() {
-      clearCanvas();
-      mainContext.drawImage(tempCanvas, 0, 0);
-    }
-  </script>
+  <script src="index.js"></script>
 </body>
 
 </html>
