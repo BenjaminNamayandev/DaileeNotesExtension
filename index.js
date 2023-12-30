@@ -1,19 +1,19 @@
-let mainCanvas = document.getElementById('drawingCanvas');
-let mainContext = mainCanvas.getContext('2d');
+const mainCanvas = document.getElementById('drawingCanvas');
+const mainContext = mainCanvas.getContext('2d');
 let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let eraserMode = false;
 
-let canvasColorPicker = document.getElementById('canvasColorPicker');
-let colorPicker = document.getElementById('colorPicker');
-let penSizeInput = document.getElementById('penSize');
-let eraserCheckbox = document.getElementById('eraserCheckbox');
+const canvasColorPicker = document.getElementById('canvasColorPicker');
+const colorPicker = document.getElementById('colorPicker');
+const penSizeInput = document.getElementById('penSize');
+const eraserCheckbox = document.getElementById('eraserCheckbox');
 
-let tempCanvas = document.createElement('canvas');
+const tempCanvas = document.createElement('canvas');
 tempCanvas.width = mainCanvas.width;
 tempCanvas.height = mainCanvas.height;
-let tempContext = tempCanvas.getContext('2d');
+const tempContext = tempCanvas.getContext('2d');
 
 mainCanvas.addEventListener('mousedown', startDrawing);
 mainCanvas.addEventListener('mousemove', draw);
@@ -66,14 +66,17 @@ function toggleEraser() {
 }
 
 function saveDrawing() {
+  clearCanvas();
+  mainContext.drawImage(tempCanvas, 0, 0);
   let dataUrl = mainCanvas.toDataURL('image/png');
   let link = document.createElement('a');
   link.href = dataUrl;
   link.download = 'drawing.png';
   link.click();
+  mainContext.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+  mainContext.drawImage(tempCanvas, 0, 0);
 }
 
 function changeCanvasColor() {
-  clearCanvas();
-  mainContext.drawImage(tempCanvas, 0, 0);
+  mainCanvas.style.background = canvasColorPicker.value;
 }
